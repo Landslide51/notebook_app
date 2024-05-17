@@ -27,6 +27,13 @@ def get_date():
     date = date.strftime("%Y-%m-%d %H:%M:%S")
     return date
 
+def get_id():
+    try:
+        idx = int(input("Введите id сообщения: "))
+    except ValueError:
+        idx = -1
+    return idx
+
 def main():
     with open(FILENAME, encoding="utf-8") as f:
         data = json.loads(f.read())
@@ -41,10 +48,7 @@ def main():
             data.append(new_record)
             save_file(data)
         elif command == "read":
-            try:
-                idx = int(input("Введите id сообщения или оставьте пустым, чтобы вывести всё: "))
-            except ValueError:
-                idx = -1
+            idx = get_id()
             for note in data:
                 if idx != -1 and note['id'] == idx:
                     read_note(note)
@@ -54,14 +58,14 @@ def main():
         elif command == "exit":
             exit()
         elif command == "del":
-            idy = int(input("Какую заметку Вы бы хотели удалить? "))
+            idy = get_id()
             for note in data:
                 if note['id'] == idy:
                     data.remove(note)
                     save_file(data)
                     break
         elif command == "update":
-            ido = int(input("Какую заметку Вы бы хотели редактировать? "))
+            ido = get_id()
             for note in data:
                 if note['id'] == ido:
                     read_note(note)
